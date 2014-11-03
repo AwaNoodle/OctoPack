@@ -98,6 +98,15 @@ namespace OctoPack.Tests.Integration
         }
 
         [Test]
+        public void ShouldBuildWithSuppliedPackageId()
+        {
+            MsBuild("Sample.WebApp\\Sample.WebApp.csproj /p:RunOctoPack=true /p:OctoPackProjectName=Test /p:Configuration=Release /v:m");
+
+            AssertPackage(@"Sample.WebApp\obj\octopacked\Test.3.1.0-dev.nupkg",
+                pkg => Assert.That(pkg.Id, Is.EqualTo("Test")));
+        }
+
+        [Test]
         public void ShouldWarnAboutNonRootScripts()
         {
             MsBuild("Sample.WebAppWithSpec\\Sample.WebAppWithSpec.csproj /p:RunOctoPack=true /p:Configuration=Release /v:m",
